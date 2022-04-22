@@ -1,0 +1,36 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+
+<div class="ec-searchnavRole">
+
+  <div class="ec-searchnavRole__topicpath">
+    <ol class="ec-topicpath">
+      <li class="ec-topicpath__item"><a href="{{ url('news_index') }}">{{ 'ニュース一覧'|trans }}</a>
+      <li class="ec-topicpath__divider">|</li>
+      <li class="ec-topicpath__item--active">{{ news.title }}</li>
+    </ol>
+  </div>
+</div>
+
+<div class="ec-role">
+  <div class="ec-pageHeader" style="border-top: 1px solid #ccc;">
+    <h2>{{ news.title }}</h2>
+  </div>
+  <div class="news-{{ news.id }}">
+    <p style="text-align:right"><small>{{ news.publish_date|date("Y/m/d") }}</small></p>
+    {{ news.description|raw }}
+  </div>
+</div>
+
+{% endblock %}

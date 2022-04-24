@@ -15,13 +15,19 @@ namespace Plugin\NewsPages;
 
 use Eccube\Entity\Layout;
 use Eccube\Entity\Page;
-use Eccube\Entity\Payment;
+use Eccube\Entity\Block;
+use Eccube\Entity\BlockPosition;
+use Eccube\Entity\Master\DeviceType;
+
 use Eccube\Entity\PageLayout;
 use Eccube\Plugin\AbstractPluginManager;
-use Eccube\Repository\PaymentRepository;
+
 use Eccube\Repository\LayoutRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Repository\BlockRepository;
+use Eccube\Repository\Master\DeviceTypeRepository;
+
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -29,7 +35,8 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginManager extends AbstractPluginManager
 {
 
-    private $orgTempDef = __DIR__.'/Resource/template/default/';
+  
+    private $pluginOrgFileDir = __DIR__.'/Resource/template/default/';
 
     private $createPages = array(
       [
@@ -44,6 +51,14 @@ class PluginManager extends AbstractPluginManager
       ]
     );
 
+    private $createBlocks = array(
+      [
+        'name' => '[NewsPages]新着情報',
+        'fileName' => 'news_NewsPages'
+      ]
+    );
+
+
     public function enable(array $meta, ContainerInterface $container)
     {
         $this->copyFiles($container);
@@ -53,6 +68,15 @@ class PluginManager extends AbstractPluginManager
         if (is_null($PageLayout)) {
             $this->createPageLayout($container);
         }
+
+        foreach( $this->createBlocks as $createBlock ):
+          $Block = $entityManager->getRepository(Block::class)->findOneBy(['file_name' => $createBlock['fileName'] ]);
+          if ( is_null($Block) ) {
+              // pagelayoutの作成
+              $this->createDataBlock($container , $createBlock );
+          }
+        endforeach;
+        
     }
 
     /**
@@ -61,8 +85,19 @@ class PluginManager extends AbstractPluginManager
      */
     public function disable(array $meta, ContainerInterface $container)
     {
+        $entityManager = $container->get('doctrine')->getManager();
+        
         $this->removePageLayout($container);
         $this->removeFiles($container);
+      
+        foreach( $this->createBlocks as $createBlock ):
+
+          $Block = $entityManager->getRepository(Block::class)->findOneBy(['file_name' => $createBlock['fileName'] ]);
+
+          if ( !is_null($Block) ) {
+              $this->removeDataBlock($container , $createBlock );
+          }
+        endforeach;
     }
 
     /**
@@ -137,10 +172,11 @@ class PluginManager extends AbstractPluginManager
      */
     private function copyFiles(ContainerInterface $container)
     {
-        $templateDir = $container->getParameter('eccube_theme_front_dir');
+        $appTemplateDefDir = $container->getParameter('eccube_theme_front_dir');
         $file = new Filesystem();
-        $file->copy($this->orgTempDef . 'News/detail.twig' , $templateDir.'/News/detail.twig' );
-        $file->copy($this->orgTempDef . 'News/index.twig' , $templateDir.'/News/index.twig' );
+        $file->copy($this->pluginOrgFileDir . 'News/detail.twig' , $appTemplateDefDir.'/News/detail.twig' );
+        $file->copy($this->pluginOrgFileDir . 'News/index.twig' , $appTemplateDefDir.'/News/index.twig' );
+        $file->copy($this->pluginOrgFileDir . 'Block/news_NewsPages.twig' , $appTemplateDefDir.'/Block/news_NewsPages.twig' );
     }
 
     /**
@@ -150,9 +186,78 @@ class PluginManager extends AbstractPluginManager
      */
     private function removeFiles(ContainerInterface $container)
     {
-        $templateDir = $container->getParameter('eccube_theme_front_dir');
+        $appTemplateDefDir = $container->getParameter('eccube_theme_front_dir');
         $file = new Filesystem();
-        $file->remove( $templateDir.'/News/detail.twig' );
-        $file->remove( $templateDir.'/News/index.twig' );
+        $file->remove( $appTemplateDefDir.'/News/detail.twig' );
+        $file->remove( $appTemplateDefDir.'/News/index.twig' );
+        $file->remove( $appTemplateDefDir.'/Block/news_NewsPages.twig' );
     }
+
+
+
+    /**
+     * ブロックを登録.
+     *
+     * @param ContainerInterface $container
+     *
+     * @throws \Exception
+     */
+    private function createDataBlock(ContainerInterface $container, $createBlock )
+    {
+        $entityManager = $container->get('doctrine')->getManager();
+        $DeviceType = $entityManager->getRepository(DeviceType::class)->find(DeviceType::DEVICE_TYPE_PC);
+        // $DeviceType = $container->get(DeviceTypeRepository::class)->find(DeviceType::DEVICE_TYPE_PC);
+
+        try {
+            /** @var Block $Block */
+            $Block = $entityManager->getRepository(Block::class)->newBlock($DeviceType);
+
+            // Blockの登録
+            $Block->setName( $createBlock['name'] )
+                ->setFileName( $createBlock['fileName'] )
+                ->setUseController(false)
+                ->setDeletable(false);
+            $entityManager->persist($Block);
+            $entityManager->flush($Block);
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+    }
+
+    /**
+     * ブロックを削除.
+     *
+     * @param ContainerInterface $container
+     *
+     * @throws \Exception
+     */
+    private function removeDataBlock(ContainerInterface $container, $createBlock)
+    {
+        
+        $entityManager = $container->get('doctrine')->getManager();
+        $Block = $entityManager->getRepository(Block::class)->findOneBy([ 'file_name' => $createBlock['fileName'] ]);
+
+        if (!$Block) {
+            return;
+        }
+
+        try {
+            // BlockPositionの削除
+            $blockPositions = $Block->getBlockPositions();
+            /** @var \Eccube\Entity\BlockPosition $BlockPosition */
+            foreach ($blockPositions as $BlockPosition) {
+                $Block->removeBlockPosition($BlockPosition);
+                $entityManager->remove($BlockPosition);
+            }
+
+            // Blockの削除
+            $entityManager->remove($Block);
+            $entityManager->flush();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
 }

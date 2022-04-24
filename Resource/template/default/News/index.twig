@@ -38,9 +38,13 @@ file that was distributed with this source code.
     {% for News in pagination %}
     <div style="border-bottom: 1px solid #ddd;padding: 30px 0;">
       <small style="float:right;">{{ News.publish_date|date("Y/m/d") }}</small><br>
-      <a href="{{ url('news_detail', {'id': News.id}) }}">
-        <h2 style="margin:0;">{{ News.title }}</h2>
-      </a>
+        {% if News.url %}
+          <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
+        {% else %}
+          <a href="{{ url('news_detail', {'id': News.id}) }}">
+        {% endif %}
+            <h2 style="margin:0;">{{ News.title }}</h2>
+          </a>
     </div>
     {% endfor %}
   {% else %}

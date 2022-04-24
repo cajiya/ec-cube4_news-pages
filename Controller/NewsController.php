@@ -13,7 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-use Knp\Component\Pager\Paginator;
+// use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 class NewsController extends AbstractController
@@ -43,7 +45,7 @@ class NewsController extends AbstractController
    * @Template("News/index.twig")
    */
 
-  public function index( Request $request, Paginator $paginator )
+  public function index( Request $request, PaginatorInterface $paginator )
   {
     // handleRequestは空のqueryの場合は無視するため
     // if ($request->getMethod() === 'GET') {

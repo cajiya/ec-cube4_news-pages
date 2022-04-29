@@ -2,8 +2,9 @@
 
 namespace Plugin\NewsPages\EventListener;
 
-use Eccube\Common\EccubeConfig;
 use Eccube\Request\Context;
+use Eccube\Repository\NewsRepository;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -16,20 +17,21 @@ class NewsPagesListener implements EventSubscriberInterface
     protected $requestStack;
 
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * @var Context
      */
     protected $requestContext;
 
-    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, Context $requestContext)
+    /**
+     * @var NewsRepository
+     */
+    protected $newsRepository;
+
+
+    public function __construct(RequestStack $requestStack, Context $requestContext, NewsRepository $newsRepository)
     {
         $this->requestStack = $requestStack;
-        $this->eccubeConfig = $eccubeConfig;
         $this->requestContext = $requestContext;
+        $this->newsRepository = $newsRepository;
     }
 
     public function onKernelRequest(FilterResponseEvent $event)
@@ -37,40 +39,57 @@ class NewsPagesListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if ($this->requestContext->isAdmin()) {
+        if ($this->requestContext->isFront()) {
 
-          log_info( '[AdminEditorWysiwyg]$event' , [$event] );
-          $response = $event->getResponse();
-          log_info( '[AdminEditorWysiwyg]$response' , [$response] );
-          $content = $response->getContent();
-          $code = <<< EOD
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.16/tinymce.min.js"></script>
-          <!-- Initialize Quill editor -->
-          <script>
-            let selector = Array(
-              '#page_admin_product_product_new .c-primaryCol textarea.form-control',
-              '#page_admin_product_product_edit .c-primaryCol textarea.form-control',
-              '#page_admin_content_news_edit .c-primaryCol textarea.form-control',
-              '#page_admin_content_news .c-primaryCol textarea.form-control',
-            );
-            selector = selector.join();
+            $request = $event->getRequest();
+            $pathInfo = $request->getPathInfo();
+            if( strpos($pathInfo,'/news/') === false ){
+                return;
+            }
+            
+            $response = $event->getResponse();
+            $content = $response->getContent();
+            
+            $News = $this->newsRepository->find( basename( $pathInfo ) );
+  
+            $title = $News->getNpseoTitle();
+            if( $title !== null ){
+                $title = "<title>{$title}</title>";
+                preg_match('/\<title\>(.*?)\<\/title\>/s', $content, $matches_title);
+                if( $matches_title != false){
+                $content = str_replace( $matches_title[0] , $title, $content);
+                }else{
+                $content = str_replace( "</head>" , $title."\r\n</head>" , $content);
+                }
+            }
 
-            tinymce.init({
-                selector: selector,
-                language: "ja",
-                plugins: "textcolor table lists link link image code",
-                menubar: "false",
-                toolbar: ['undo redo | bold italic | styleselect | forecolor backcolor ',
-                          'numlist bullist | table | link | image'],
-                height: 500,
-                branding: false
-            });
-          </script></body>
-EOD;
-        // $content = str_replace( '</body>', $code, $content);
-        // log_info( '[AdminEditorWysiwyg]$content' , [$content] );
-        // $response->setContent($content);
 
+            $description = $News->getNpseoDescription();
+            if( $description !== null ){
+                $description = "<meta name=\"description\" content=\"{$description}\" >";
+                preg_match('/\<meta name=\"description\" (.*?)\>/s', $content, $matches_description);
+
+                if( $matches_description != false){
+                $content = str_replace( $matches_description[0] , $description, $content);
+                }else{
+                $content = str_replace( "</head>" , $description."\r\n</head>", $content);
+                }
+            }
+
+
+            $robots = $News->getNpseoRobots();
+            if( $robots !== null ){
+                $robots = "<meta name=\"robots\" content=\"{$robots}\" >";
+                preg_match('/\<meta name=\"robots\" (.*?)\>/', $content, $matches_robots);
+
+                if( $matches_robots != false){
+                $content = str_replace( $matches_robots[0] , $robots, $content);
+                }else{
+                $content = str_replace( "</head>" , $robots."\r\n</head>", $content);
+                }
+            }
+
+            $response->setContent($content);
 
         }
     }

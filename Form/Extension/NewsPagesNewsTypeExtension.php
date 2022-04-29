@@ -3,17 +3,57 @@
 namespace Plugin\NewsPages\Form\Extension;
 
 use Eccube\Form\Type\Admin\NewsType;
+use Eccube\Common\EccubeConfig;
+
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 class NewsPagesNewsTypeExtension extends AbstractTypeExtension
 {
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    public function __construct(EccubeConfig $eccubeConfig)
+    {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $options = $builder->get('description')->getOptions();
+        log_info('[NewsPages]$options',[$options]);
+
+        $options['constraints'] = [
+            new Assert\Length(['max' => $this->eccubeConfig['eccube_lltext_len']]),
+        ];
+
+        $builder->add('description', TextareaType::class, $options);
+
+        $builder->add('np_thumbnail_data', FileType::class, [
+            'label' => 'サムネイル画像',
+            'required' => false,
+            'eccube_form_options' => [
+                'auto_render' => true,
+            ],
+            'mapped' => false,
+        ]);
+
+        $builder->add('np_thumbnail_url', TextType::class, [
+            'required' => false,
+            'eccube_form_options' => [
+                'auto_render' => true,
+            ],
+        ]);
 
         $builder
             ->add('npseo_title', TextType::class, [

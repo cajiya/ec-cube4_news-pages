@@ -13,6 +13,13 @@ trait NewsTrait
     /**
      * @var string
      *
+     * @ORM\Column(name="np_thumbnail_url", type="string", nullable=true)
+     */
+    private $np_thumbnail_url;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="npseo_title", type="string", nullable=true)
      */
     private $npseo_title;
@@ -31,6 +38,22 @@ trait NewsTrait
      */
     private $npseo_robots;
 
+
+    /**
+     * @return string
+     */
+    public function getNpThumbnailUrl()
+    {
+        return $this->np_thumbnail_url;
+    }
+
+    /**
+     * @param string $np_thumbnail_url
+     */
+    public function setNpThumbnailUrl($np_thumbnail_url)
+    {
+        $this->np_thumbnail_url = $np_thumbnail_url;
+    }
 
     /**
      * @return string

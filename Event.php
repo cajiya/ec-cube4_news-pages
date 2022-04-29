@@ -13,12 +13,18 @@ class Event implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            '@admin/Content/news.twig' => 'adminContentNewsTwig'
+            '@admin/Content/news.twig' => 'adminContentNewsTwig',
+            '@admin/Content/news_edit.twig' => 'adminContentNewsEditTwig'
         ];
     }
 
     public function adminContentNewsTwig(TemplateEvent $event)
     {
         $event->addSnippet('@NewsPages/admin/Content/news_url_view.twig');
+    }
+
+    public function adminContentNewsEditTwig(TemplateEvent $event)
+    {
+        $event->addSnippet('@NewsPages/admin/Content/news_edit_snipet.twig');
     }
 }

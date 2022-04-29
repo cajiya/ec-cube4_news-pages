@@ -1,0 +1,16 @@
+{% block main %}
+<script>
+((d)=>{
+    const p = "{{ asset('', 'save_image') }}",
+    t = d.querySelector('#admin_news_np_thumbnail_url');
+    let i = d.createElement('img');
+    if(!t.value){
+        t.outerHTML = "";
+        return;
+    };
+    i.setAttribute('style','max-width:500px;max-height:500px');
+    i.src = p + t.value;
+    t.outerHTML = i.outerHTML;
+})(document);
+</script>
+{% endblock %}

@@ -29,7 +29,11 @@ file that was distributed with this source code.
   </div>
   <div class="news-{{ news.id }}">
     <p style="text-align:right"><small>{{ news.publish_date|date("Y/m/d") }}</small></p>
+
+    <img src="{{ asset( news.np_thumbnail_url , 'save_image') }}" alt="{{ news.title }}">
+
     {{ news.description|raw }}
+    
   </div>
 </div>
 

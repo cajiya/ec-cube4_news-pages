@@ -36,7 +36,7 @@ class PluginManager extends AbstractPluginManager
 {
 
   
-    private $pluginOrgFileDir = __DIR__.'/Resource/template/default/';
+    private $pluginOrgFileDir = __DIR__.'/Resource/template/';
 
     private $createPages = array(
       [
@@ -173,10 +173,14 @@ class PluginManager extends AbstractPluginManager
     private function copyFiles(ContainerInterface $container)
     {
         $appTemplateDefDir = $container->getParameter('eccube_theme_front_dir');
+        $appTemplateAdminDir = $container->getParameter('eccube_theme_admin_dir');
         $file = new Filesystem();
-        $file->copy($this->pluginOrgFileDir . 'News/detail.twig' , $appTemplateDefDir.'/News/detail.twig' );
-        $file->copy($this->pluginOrgFileDir . 'News/index.twig' , $appTemplateDefDir.'/News/index.twig' );
-        $file->copy($this->pluginOrgFileDir . 'Block/news_NewsPages.twig' , $appTemplateDefDir.'/Block/news_NewsPages.twig' );
+
+        $file->copy($this->pluginOrgFileDir . 'default/News/detail.twig' , $appTemplateDefDir.'/News/detail.twig' );
+        $file->copy($this->pluginOrgFileDir . 'default/News/index.twig' , $appTemplateDefDir.'/News/index.twig' );
+        $file->copy($this->pluginOrgFileDir . 'default/Block/news_NewsPages.twig' , $appTemplateDefDir.'/Block/news_NewsPages.twig' );
+
+        $file->copy($this->pluginOrgFileDir . 'admin/Content/news_edit.twig' , $appTemplateAdminDir.'/Content/news_edit.twig' );
     }
 
     /**
@@ -187,10 +191,14 @@ class PluginManager extends AbstractPluginManager
     private function removeFiles(ContainerInterface $container)
     {
         $appTemplateDefDir = $container->getParameter('eccube_theme_front_dir');
+        $appTemplateAdminDir = $container->getParameter('eccube_theme_admin_dir');
+
         $file = new Filesystem();
         $file->remove( $appTemplateDefDir.'/News/detail.twig' );
         $file->remove( $appTemplateDefDir.'/News/index.twig' );
         $file->remove( $appTemplateDefDir.'/Block/news_NewsPages.twig' );
+
+        $file->remove( $appTemplateAdminDir.'/Content/news_edit.twig' );
     }
 
 

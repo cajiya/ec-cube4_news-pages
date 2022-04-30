@@ -1,12 +1,12 @@
 {
-  "name": "ec-cube/newspages",
+  "name": "ec-cube/cjy-news-pages",
   "version": "1.0.0",
-  "description": "News Pages",
+  "description": "EC CUBE 4.1系用 新着情報の独自ページ化プラグイン",
   "type": "eccube-plugin",
   "require": {
     "ec-cube/plugin-installer": "~0.0.6 || ^2.0"
   },
   "extra": {
-    "code": "NewsPages"
+    "code": "cjy-news-pages"
   }
 }

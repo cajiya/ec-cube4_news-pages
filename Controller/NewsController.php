@@ -4,8 +4,9 @@ namespace Plugin\NewsPages\Controller;
 
 use Eccube\Controller\AbstractController;
 
+use Plugin\NewsPages\Repository\NewsRepository;
 use Eccube\Entity\News;
-use Eccube\Repository\NewsRepository;
+// use Eccube\Repository\NewsRepository;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 // use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -48,20 +51,25 @@ class NewsController extends AbstractController
   public function index( Request $request, PaginatorInterface $paginator )
   {
     // handleRequestは空のqueryの場合は無視するため
-    // if ($request->getMethod() === 'GET') {
-    //     $request->query->set('pageno', $request->query->get('pageno', ''));
-    // }
+    if ($request->getMethod() === 'GET') {
+        $request->query->set('pageno', $request->query->get('pageno', '1'));
+    }
+    log_info('[NewsPages]$request',[$request]);
+    log_info('[NewsPages]$paginator',[$paginator]);
 
-    $qb = $this->newsRepository->getQueryBuilderAll();
+    $qb = $this->newsRepository->getQueryBuilderPublished();
     log_info('[NewsPages]$qb',[$qb]);
 
     $query = $qb->getQuery()->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
+    log_info('[NewsPages]$request->query->get(pageno, 1)',[$request->query->get('pageno', 1)]);
     /** @var SlidingPagination $pagination */
     $pagination = $paginator->paginate(
         $query,
-        $request->query->get('pageno', 1)
+        $request->query->get('pageno', '1')
     );
+    log_info('[NewsPages]$pagination',[$pagination]);
+    
     foreach( $pagination as $news ){
       log_info('[NewsPages]$news',[$news]);
     }
@@ -81,6 +89,8 @@ class NewsController extends AbstractController
 
   public function detail( Request $request, News $News )
   {
+    
+    log_info('[NewsPages]$this->checkVisibility($News)',[$this->checkVisibility($News)]);
     if ( !$this->checkVisibility($News) ) {
       throw new NotFoundHttpException();
     }
@@ -107,12 +117,19 @@ class NewsController extends AbstractController
   {
       $is_admin = $this->session->has('_security_admin');
 
+      $date = time();
+      log_info('[NewsPages]$date',[$date]);
+      
       // 管理ユーザの場合はステータスやオプションにかかわらず閲覧可能.
       if (!$is_admin) {
           // 公開ステータスでない商品は表示しない.
-          // if ( $News->isVisible() !== 0 ) {
-              // return false;
-          // }
+          if ( $News->isVisible() === false ) {
+            return false;
+          }elseif( $News->getPublishDate()->getTimestamp() >= $date ) {
+            return false;
+          }else{
+            return true;
+          }
       }
 
       return true;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPages\Form\Extension;
+namespace Plugin\NewsPageSelfReliance\Form\Extension;
 
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Common\EccubeConfig;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class NewsPagesNewsTypeExtension extends AbstractTypeExtension
+class NpsrNewsTypeExtension extends AbstractTypeExtension
 {
     /**
      * @var EccubeConfig

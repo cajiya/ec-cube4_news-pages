@@ -1,12 +1,11 @@
 <?php
 
-namespace Plugin\NewsPages\Controller;
+namespace Plugin\NewsPageSelfReliance\Controller;
 
 use Eccube\Controller\AbstractController;
 
-use Plugin\NewsPages\Repository\NewsRepository;
+use Plugin\NewsPageSelfReliance\Repository\NpsrNewsRepository;
 use Eccube\Entity\News;
-// use Eccube\Repository\NewsRepository;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,11 +20,11 @@ use Knp\Component\Pager\PaginatorInterface;
 
 
 
-class NewsController extends AbstractController
+class NpsrController extends AbstractController
 {
 
   /**
-   * @var NewsRepository
+   * @var NpsrNewsRepository
    */
   protected $newsRepository;
 
@@ -34,7 +33,7 @@ class NewsController extends AbstractController
    * NewsController constructor.
    */
   public function __construct(
-    NewsRepository $newsRepository
+    NpsrNewsRepository $newsRepository
   )
   {
     $this->newsRepository = $newsRepository;

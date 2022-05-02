@@ -8,6 +8,7 @@ use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -48,7 +49,7 @@ class NpsrNewsTypeExtension extends AbstractTypeExtension
             'mapped' => false,
         ]);
 
-        $builder->add('np_thumbnail_url', TextType::class, [
+        $builder->add('np_thumbnail_url', HiddenType::class, [
             'required' => false,
             'eccube_form_options' => [
                 'auto_render' => true,

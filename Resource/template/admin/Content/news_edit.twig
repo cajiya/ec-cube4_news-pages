@@ -138,15 +138,55 @@ file that was distributed with this source code.
 ((d)=>{
     const p = "{{ asset('', 'save_image') }}",
     t = d.querySelector('#admin_news_np_thumbnail_url');
-    let i = d.createElement('img');
-    if(!t.value){
-        t.outerHTML = "";
-        return;
-    };
-    i.setAttribute('style','max-width:500px;max-height:500px');
-    i.src = p + t.value;
-    t.outerHTML = i.outerHTML;
+    if( !t.value ) return false;
+        t.parentElement.classList.add('thumbnail-area');
+
+        let i = d.createElement('img');
+        i.src = p + t.value;
+        t.parentElement.appendChild(i);
+
+        let o = d.createElement('div');
+        o.addEventListener('click',function(e){
+            console.log(e);
+            console.log(this);
+            this.parentElement.querySelector('#admin_news_np_thumbnail_url').value = "";
+            this.parentElement.classList.remove('thumbnail-area');
+            this.parentElement.querySelector('img').remove();
+            this.remove();
+        },false);
+        o.setAttribute('class','delete-thumbnail');
+        t.parentElement.appendChild(o);
 })(document);
 </script>
+<style>
+.thumbnail-area {
+    position: relative;
+}
+.thumbnail-area img {
+    max-width: 400px;
+    max-height: 400px;
+    border: 5px solid #2f3f4e;
+}
 
+.thumbnail-area .delete-thumbnail {
+    display: flex;
+    font-size: 0.8rem;
+    font-weight: 100;
+    background: #c04949;
+    border: 1px solid #eee;
+    box-shadow: 0 -15px 5px rgb(50 50 50 / 30%) inset;
+    color: #fff;
+    position: absolute;
+    padding: 5px 14px;
+    bottom: 15px;
+    left: 25px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.thumbnail-area .delete-thumbnail::before {
+    content: "× 削除";
+}
+</style>
 {% endblock %}

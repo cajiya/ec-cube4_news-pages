@@ -10,7 +10,7 @@
     };
     i.setAttribute('style','max-width:500px;max-height:500px');
     i.src = p + t.value;
-    t.outerHTML = i.outerHTML;
+    t.outerHTML = t.outerHTML+i.outerHTML;
 })(document);
 </script>
 {% endblock %}

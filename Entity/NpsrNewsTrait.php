@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\NewsPages\Entity;
+namespace Plugin\NewsPageSelfReliance\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation as Eccube;
@@ -7,7 +7,7 @@ use Eccube\Annotation as Eccube;
 /**
  * @Eccube\EntityExtension("Eccube\Entity\News")
  */
-trait NewsTrait
+trait NpsrNewsTrait
 {
 
     /**

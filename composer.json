@@ -1,12 +1,12 @@
 {
-  "name": "ec-cube/cjy-news-pages",
+  "name": "ec-cube/news-page-self-reliance",
   "version": "1.0.0",
-  "description": "EC CUBE 4.1系用 新着情報の独自ページ化プラグイン",
+  "description": "新着情報の独自ページ化",
   "type": "eccube-plugin",
   "require": {
     "ec-cube/plugin-installer": "~0.0.6 || ^2.0"
   },
   "extra": {
-    "code": "cjy-news-pages"
+    "code": "NewsPageSelfReliance"
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPages\EventListener;
+namespace Plugin\NewsPageSelfReliance\EventListener;
 
 use Eccube\Request\Context;
 use Eccube\Repository\NewsRepository;
@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-class NewsPagesListener implements EventSubscriberInterface
+class NpsrPagesListener implements EventSubscriberInterface
 {
     /**
      * @var RequestStack

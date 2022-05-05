@@ -21,20 +21,31 @@ file that was distributed with this source code.
       <li class="ec-topicpath__item--active">{{ news.title }}</li>
     </ol>
   </div>
+
 </div>
+
 
 <div class="ec-role">
-  <div class="ec-pageHeader" style="border-top: 1px solid #ccc;">
-    <h2>{{ news.title }}</h2>
-  </div>
-  <div class="news-{{ news.id }}">
-    <p style="text-align:right"><small>{{ news.publish_date|date("Y/m/d") }}</small></p>
 
-    <img src="{{ asset( news.np_thumbnail_url , 'save_image') }}" alt="{{ news.title }}">
+  <hr>
+  <div class="news-{{ news.id }} row">
+    <div class="col-md-8 col-md-offset-2">
+      <p class="text-right"><small>{{ news.publish_date|date("Y/m/d") }}</small></p>
+      <h1 class="npsr-title">{{ news.title }}</h1>
 
-    {{ news.description|raw }}
-    
+      {% if news.np_thumbnail_url == true %}
+      <div class="npsr-thumbnail">
+        <img src="{{ asset( news.np_thumbnail_url , 'save_image') }}" alt="{{ news.title }}">
+      </div>
+      {% endif %}
+      <div class="npsr-content">
+        {{ news.description|raw }}
+      </div>
+
+    </div>
   </div>
+
 </div>
+
 
 {% endblock %}

@@ -47,24 +47,15 @@ class NpsrControllerListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $form = $event->getArgument('form');
         $News = $event->getArgument('News');
-        log_info( '[NewsControllerListener]$event ', [$event]);
-        log_info( '[NewsControllerListener]$event->getRequest() ', [$event->getRequest()]);
-        log_info( '[NewsControllerListener]$event->getArgument(form) ', [$event->getArgument('form')]);
-        log_info( '[NewsControllerListener]$event->getArgument(News) ', [$event->getArgument('News')]);
-        log_info( '[NewsControllerListener]$form->getData() ', [$form->getData()]);
-        // log_info( '[NewsControllerListener]$request->getQuery() ', [$request->getQuery()]);
-        // log_info( '[NewsControllerListener]$request->getFiles() ', [$request->getFiles()]);
         $np_thumbnail_data = $form->get('np_thumbnail_data')->getData();
-        log_info( '[NewsControllerListener]$np_thumbnail_data ', [$np_thumbnail_data]);
 
         if( $np_thumbnail_data !== null ){
             $filename = time() . '_' . $np_thumbnail_data->getClientOriginalName();
             $file_save_dir = $this->eccubeConfig['eccube_save_image_dir'].'/';
-            // $dir = trim( $this->eccubeConfig( 'kernel.project_dir'). );
             try {
                 $np_thumbnail_data->move( $file_save_dir , $filename );
             } catch (FileException $e) {
-                log_info('Product review move error');
+                log_info('[NPSR]画像保存時にエラー発生', [$e]);
             }
             $News->setNpThumbnailUrl( $filename );
             $this->newsRepository->save( $News );

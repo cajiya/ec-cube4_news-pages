@@ -53,20 +53,4 @@ class NpsrNewsRepository extends AbstractRepository
 
     }
 
-    /**
-     * @return News[]|ArrayCollection
-     */
-    public function getList()
-    {
-        // second level cacheを効かせるためfindByで取得
-        $Results = $this->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);
-
-        // 公開日時前のNewsをフィルター
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->lte('publish_date', new \DateTime()));
-
-        $News = new ArrayCollection($Results);
-
-        return $News->matching($criteria);
-    }
 }

@@ -32,14 +32,11 @@ class NpsrNewsTypeExtension extends AbstractTypeExtension
     {
 
         $options = $builder->get('description')->getOptions();
-        log_info('[NewsPages]$options',[$options]);
-
         $options['constraints'] = [
             new Assert\Length(['max' => $this->eccubeConfig['eccube_lltext_len']]),
         ];
 
         $builder->add('description', TextareaType::class, $options);
-
         $builder->add('np_thumbnail_data', FileType::class, [
             'label' => 'サムネイル画像',
             'required' => false,

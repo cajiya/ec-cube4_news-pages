@@ -16,8 +16,6 @@
 
     let o = d.createElement('div');
     o.addEventListener('click',function(e){
-        console.log(e);
-        console.log(this);
         this.parentElement.querySelector('#admin_news_np_thumbnail_url').value = "";
         this.parentElement.classList.remove('thumbnail-area');
         this.parentElement.querySelector('img').remove();

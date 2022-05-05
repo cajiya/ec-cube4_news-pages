@@ -35,7 +35,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginManager extends AbstractPluginManager
 {
 
-  
     private $pluginOrgFileDir = __DIR__.'/Resource/template/';
 
     private $createPages = array(
@@ -58,7 +57,6 @@ class PluginManager extends AbstractPluginManager
       ]
     );
 
-
     public function enable(array $meta, ContainerInterface $container)
     {
         $this->copyFiles($container);
@@ -68,11 +66,9 @@ class PluginManager extends AbstractPluginManager
         if (is_null($PageLayout)) {
             $this->createPageLayout($container);
         }
-
         foreach( $this->createBlocks as $createBlock ):
           $Block = $entityManager->getRepository(Block::class)->findOneBy(['file_name' => $createBlock['fileName'] ]);
           if ( is_null($Block) ) {
-              // pagelayoutの作成
               $this->createDataBlock($container , $createBlock );
           }
         endforeach;
@@ -89,11 +85,8 @@ class PluginManager extends AbstractPluginManager
         
         $this->removePageLayout($container);
         $this->removeFiles($container);
-      
         foreach( $this->createBlocks as $createBlock ):
-
           $Block = $entityManager->getRepository(Block::class)->findOneBy(['file_name' => $createBlock['fileName'] ]);
-
           if ( !is_null($Block) ) {
               $this->removeDataBlock($container , $createBlock );
           }
@@ -109,11 +102,11 @@ class PluginManager extends AbstractPluginManager
         $pages = $this->createPages;
         foreach( (array)$pages as $p ){
 
-          // ページレイアウトにプラグイン使用時の値を代入
           /** @var \Eccube\Entity\Page $Page */
           $entityManager = $container->get('doctrine')->getManager();
 
           $Page = $entityManager->getRepository(Page::class)->newPage();
+
           $Page->setEditType(Page::EDIT_TYPE_DEFAULT);
           $Page->setName( $p['name'] );
           $Page->setUrl( $p['url'] );
@@ -137,7 +130,6 @@ class PluginManager extends AbstractPluginManager
 
         }
 
-
     }
 
     /**
@@ -150,18 +142,17 @@ class PluginManager extends AbstractPluginManager
 
         $pages = $this->createPages;
         foreach( $pages as $p ){
-          $entityManager = $container->get('doctrine')->getManager();
-          $Page = $entityManager->getRepository(Page::class)->findOneBy(['url' => $p['url'] ]);
-          if ($Page) {
-              $Layout = $entityManager->getRepository(Layout::class)->find(Layout::DEFAULT_LAYOUT_UNDERLAYER_PAGE);
-              $PageLayout = $entityManager->getRepository(PageLayout::class)->findOneBy(['Page' => $Page, 'Layout' => $Layout]);
-              // Blockの削除
-              $entityManager = $container->get('doctrine')->getManager();
-              $entityManager->remove($PageLayout);
-              $entityManager->remove($Page);
-              $entityManager->flush();
-          }
-
+            $entityManager = $container->get('doctrine')->getManager();
+            $Page = $entityManager->getRepository(Page::class)->findOneBy(['url' => $p['url'] ]);
+            if ($Page) {
+                $Layout = $entityManager->getRepository(Layout::class)->find(Layout::DEFAULT_LAYOUT_UNDERLAYER_PAGE);
+                $PageLayout = $entityManager->getRepository(PageLayout::class)->findOneBy(['Page' => $Page, 'Layout' => $Layout]);
+                // Blockの削除
+                $entityManager = $container->get('doctrine')->getManager();
+                $entityManager->remove($PageLayout);
+                $entityManager->remove($Page);
+                $entityManager->flush();
+            }
         }
     }
 
@@ -174,13 +165,12 @@ class PluginManager extends AbstractPluginManager
     {
         $appTemplateDefDir = $container->getParameter('eccube_theme_front_dir');
         $appTemplateAdminDir = $container->getParameter('eccube_theme_admin_dir');
+
         $file = new Filesystem();
 
         $file->copy($this->pluginOrgFileDir . 'default/News/detail.twig' , $appTemplateDefDir.'/News/detail.twig' );
         $file->copy($this->pluginOrgFileDir . 'default/News/index.twig' , $appTemplateDefDir.'/News/index.twig' );
         $file->copy($this->pluginOrgFileDir . 'default/Block/news_NewsPages.twig' , $appTemplateDefDir.'/Block/news_NewsPages.twig' );
-
-        // $file->copy($this->pluginOrgFileDir . 'admin/Content/news_edit.twig' , $appTemplateAdminDir.'/Content/news_edit.twig' );
     }
 
     /**
@@ -194,13 +184,11 @@ class PluginManager extends AbstractPluginManager
         $appTemplateAdminDir = $container->getParameter('eccube_theme_admin_dir');
 
         $file = new Filesystem();
+
         $file->remove( $appTemplateDefDir.'/News/detail.twig' );
         $file->remove( $appTemplateDefDir.'/News/index.twig' );
         $file->remove( $appTemplateDefDir.'/Block/news_NewsPages.twig' );
-
-        // $file->remove( $appTemplateAdminDir.'/Content/news_edit.twig' );
     }
-
 
 
     /**
@@ -214,7 +202,6 @@ class PluginManager extends AbstractPluginManager
     {
         $entityManager = $container->get('doctrine')->getManager();
         $DeviceType = $entityManager->getRepository(DeviceType::class)->find(DeviceType::DEVICE_TYPE_PC);
-        // $DeviceType = $container->get(DeviceTypeRepository::class)->find(DeviceType::DEVICE_TYPE_PC);
 
         try {
             /** @var Block $Block */

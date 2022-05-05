@@ -1,5 +1,5 @@
 {
-  "name": "ec-cube/news-page-self-reliance",
+  "name": "ec-cube/newspageselfreliance",
   "version": "1.0.0",
   "description": "新着情報の独自ページ化",
   "type": "eccube-plugin",

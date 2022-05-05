@@ -53,7 +53,7 @@ class PluginManager extends AbstractPluginManager
     private $createBlocks = array(
       [
         'name' => '[NewsPages]新着情報',
-        'fileName' => 'news_NewsPages'
+        'fileName' => 'npsr_recent_news'
       ]
     );
 
@@ -170,7 +170,7 @@ class PluginManager extends AbstractPluginManager
 
         $file->copy($this->pluginOrgFileDir . 'default/News/detail.twig' , $appTemplateDefDir.'/News/detail.twig' );
         $file->copy($this->pluginOrgFileDir . 'default/News/index.twig' , $appTemplateDefDir.'/News/index.twig' );
-        $file->copy($this->pluginOrgFileDir . 'default/Block/news_NewsPages.twig' , $appTemplateDefDir.'/Block/news_NewsPages.twig' );
+        $file->copy($this->pluginOrgFileDir . 'default/Block/npsr_recent_news.twig' , $appTemplateDefDir.'/Block/npsr_recent_news.twig' );
     }
 
     /**
@@ -187,7 +187,7 @@ class PluginManager extends AbstractPluginManager
 
         $file->remove( $appTemplateDefDir.'/News/detail.twig' );
         $file->remove( $appTemplateDefDir.'/News/index.twig' );
-        $file->remove( $appTemplateDefDir.'/Block/news_NewsPages.twig' );
+        $file->remove( $appTemplateDefDir.'/Block/npsr_recent_news.twig' );
     }
 
 

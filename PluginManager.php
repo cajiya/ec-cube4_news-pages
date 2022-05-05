@@ -180,7 +180,7 @@ class PluginManager extends AbstractPluginManager
         $file->copy($this->pluginOrgFileDir . 'default/News/index.twig' , $appTemplateDefDir.'/News/index.twig' );
         $file->copy($this->pluginOrgFileDir . 'default/Block/news_NewsPages.twig' , $appTemplateDefDir.'/Block/news_NewsPages.twig' );
 
-        $file->copy($this->pluginOrgFileDir . 'admin/Content/news_edit.twig' , $appTemplateAdminDir.'/Content/news_edit.twig' );
+        // $file->copy($this->pluginOrgFileDir . 'admin/Content/news_edit.twig' , $appTemplateAdminDir.'/Content/news_edit.twig' );
     }
 
     /**
@@ -198,7 +198,7 @@ class PluginManager extends AbstractPluginManager
         $file->remove( $appTemplateDefDir.'/News/index.twig' );
         $file->remove( $appTemplateDefDir.'/Block/news_NewsPages.twig' );
 
-        $file->remove( $appTemplateAdminDir.'/Content/news_edit.twig' );
+        // $file->remove( $appTemplateAdminDir.'/Content/news_edit.twig' );
     }
 
 

@@ -25,6 +25,6 @@ class Event implements EventSubscriberInterface
 
     public function adminContentNewsEditTwig(TemplateEvent $event)
     {
-        // $event->addSnippet('@NewsPageSelfReliance/admin/Content/news_edit_snipet.twig');
+        $event->addSnippet('@NewsPageSelfReliance/admin/Content/news_edit_snipet.twig');
     }
 }

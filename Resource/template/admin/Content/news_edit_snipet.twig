@@ -1,6 +1,10 @@
 {% block main %}
 <script>
 ((d)=>{
+    
+    f = d.querySelector('#form1');
+    f.setAttribute('enctype','multipart/form-data');
+
     const p = "{{ asset('', 'save_image') }}",
     t = d.querySelector('#admin_news_np_thumbnail_url');
     let i = d.createElement('img');
@@ -8,6 +12,7 @@
         t.outerHTML = "";
         return;
     };
+    
     i.setAttribute('style','max-width:500px;max-height:500px');
     i.src = p + t.value;
     t.outerHTML = t.outerHTML+i.outerHTML;

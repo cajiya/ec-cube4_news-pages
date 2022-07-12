@@ -9,7 +9,7 @@ use Eccube\Common\EccubeConfig;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class NpsrControllerListener implements EventSubscriberInterface
 {

@@ -7,7 +7,8 @@ use Eccube\Repository\NewsRepository;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class NpsrPagesListener implements EventSubscriberInterface
 {
@@ -34,13 +35,14 @@ class NpsrPagesListener implements EventSubscriberInterface
         $this->newsRepository = $newsRepository;
     }
 
-    public function onKernelRequest(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        log_info('[NPSR]onKernelResponse');
+
+        if (!$event->isMainRequest()) {
             return;
         }
         if ($this->requestContext->isFront()) {
-
             $request = $event->getRequest();
             $pathInfo = $request->getPathInfo();
             if( strpos($pathInfo,'/news/') === false ){
@@ -51,8 +53,12 @@ class NpsrPagesListener implements EventSubscriberInterface
             $content = $response->getContent();
             
             $News = $this->newsRepository->find( basename( $pathInfo ) );
+
+            log_info('[NPSR]$content',[$content]);
+            log_info('[NPSR]$News',[$News]);
   
             $title = $News->getNpseoTitle();
+            log_info('[NPSR]$title',[$title]);
             if( $title !== null ){
                 $title = "<title>{$title}</title>";
                 preg_match('/\<title\>(.*?)\<\/title\>/s', $content, $matches_title);
@@ -65,6 +71,8 @@ class NpsrPagesListener implements EventSubscriberInterface
 
 
             $description = $News->getNpseoDescription();
+            log_info('[NPSR]$description',[$description]);
+
             if( $description !== null ){
                 $description = "<meta name=\"description\" content=\"{$description}\" >";
                 preg_match('/\<meta name=\"description\" (.*?)\>/s', $content, $matches_description);
@@ -97,7 +105,8 @@ class NpsrPagesListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.response' => ['onKernelRequest', 512],
+            // 'KernelEvents::RESPONSE' => ['onKernelResponse', 512],
+            KernelEvents::RESPONSE => ['onKernelResponse', 512],
         ];
     }
 

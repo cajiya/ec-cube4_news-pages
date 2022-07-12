@@ -1,7 +1,7 @@
 {% block main %}
     {% for News in pagination %}
     <div class="js-news_view_link col px-0 text-center" data-news_id="{{News.id}}">
-        <a class="btn btn-ec-actionIcon" href="{{ url('news_detail', {id: News.id}) }}" data-toggle="tooltip" data-placement="top" title="表示">
+        <a class="btn btn-ec-actionIcon" href="{{ url('news_detail', {id: News.id}) }}" data-toggle="tooltip" data-placement="top" title="表示" target="_blank">
             <i class="fa fa-eye fa-lg text-secondary"></i>
         </a>
     </div>

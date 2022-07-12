@@ -37,8 +37,6 @@ class NpsrPagesListener implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event)
     {
-        log_info('[NPSR]onKernelResponse');
-
         if (!$event->isMainRequest()) {
             return;
         }
@@ -54,11 +52,7 @@ class NpsrPagesListener implements EventSubscriberInterface
             
             $News = $this->newsRepository->find( basename( $pathInfo ) );
 
-            log_info('[NPSR]$content',[$content]);
-            log_info('[NPSR]$News',[$News]);
-  
             $title = $News->getNpseoTitle();
-            log_info('[NPSR]$title',[$title]);
             if( $title !== null ){
                 $title = "<title>{$title}</title>";
                 preg_match('/\<title\>(.*?)\<\/title\>/s', $content, $matches_title);
@@ -69,9 +63,7 @@ class NpsrPagesListener implements EventSubscriberInterface
                 }
             }
 
-
             $description = $News->getNpseoDescription();
-            log_info('[NPSR]$description',[$description]);
 
             if( $description !== null ){
                 $description = "<meta name=\"description\" content=\"{$description}\" >";
@@ -105,7 +97,6 @@ class NpsrPagesListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            // 'KernelEvents::RESPONSE' => ['onKernelResponse', 512],
             KernelEvents::RESPONSE => ['onKernelResponse', 512],
         ];
     }

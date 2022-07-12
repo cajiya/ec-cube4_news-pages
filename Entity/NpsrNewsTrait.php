@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\NewsPageSelfReliance\Entity;
+namespace Plugin\NewsPageSelfReliance42\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation as Eccube;

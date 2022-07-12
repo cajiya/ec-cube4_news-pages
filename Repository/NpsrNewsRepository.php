@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\NewsPageSelfReliance\Repository;
+namespace Plugin\NewsPageSelfReliance42\Repository;
 
 use Eccube\Entity\News;
 use Eccube\Repository\AbstractRepository;
@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * NewsRepository
@@ -31,7 +31,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class NpsrNewsRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, News::class);
     }

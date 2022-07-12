@@ -1,10 +1,10 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance\Controller;
+namespace Plugin\NewsPageSelfReliance42\Controller;
 
 use Eccube\Controller\AbstractController;
 
-use Plugin\NewsPageSelfReliance\Repository\NpsrNewsRepository;
+use Plugin\NewsPageSelfReliance42\Repository\NpsrNewsRepository;
 use Eccube\Entity\News;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

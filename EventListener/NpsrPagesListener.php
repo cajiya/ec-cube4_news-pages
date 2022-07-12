@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance\EventListener;
+namespace Plugin\NewsPageSelfReliance42\EventListener;
 
 use Eccube\Request\Context;
 use Eccube\Repository\NewsRepository;

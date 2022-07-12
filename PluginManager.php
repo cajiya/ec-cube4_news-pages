@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\NewsPageSelfReliance;
+namespace Plugin\NewsPageSelfReliance42;
 
 use Eccube\Entity\Layout;
 use Eccube\Entity\Page;

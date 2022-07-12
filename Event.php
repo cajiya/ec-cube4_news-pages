@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance;
+namespace Plugin\NewsPageSelfReliance42;
 
 use Eccube\Event\TemplateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,11 +20,11 @@ class Event implements EventSubscriberInterface
 
     public function adminContentNewsTwig(TemplateEvent $event)
     {
-        $event->addSnippet('@NewsPageSelfReliance/admin/Content/news_url_view.twig');
+        $event->addSnippet('@NewsPageSelfReliance42/admin/Content/news_url_view.twig');
     }
 
     public function adminContentNewsEditTwig(TemplateEvent $event)
     {
-        $event->addSnippet('@NewsPageSelfReliance/admin/Content/news_edit_snipet.twig');
+        $event->addSnippet('@NewsPageSelfReliance42/admin/Content/news_edit_snipet.twig');
     }
 }

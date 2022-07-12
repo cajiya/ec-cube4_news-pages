@@ -13,9 +13,9 @@ EC-CUBEデフォルトの「新着情報」の、一覧／詳細URLを生成す�
 ```
 cd app/Plugin;
 git clone https://github.com/cajiya/ec-cube4_npsr.git;
-mv ec-cube4_npsr NewsPageSelfReliance;
+mv ec-cube4_npsr NewsPageSelfReliance42;
 cd ../../;
-php bin/console eccube:plugin:install --code="NewsPageSelfReliance"
+php bin/console eccube:plugin:install --code="NewsPageSelfReliance42"
 ```
 
 # 開発作業時の注意事項
@@ -33,6 +33,6 @@ php bin/console cache:clear --no-warmup
 `app/template/`内のファイルを削除する処理をしているので、以下コマンドの実行でも削除可能。
 
 ```
-php bin/console eccube:plugin:disable --code="NewsPageSelfReliance"
-php bin/console eccube:plugin:enable --code="NewsPageSelfReliance"
+php bin/console eccube:plugin:disable --code="NewsPageSelfReliance42"
+php bin/console eccube:plugin:enable --code="NewsPageSelfReliance42"
 ```

@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance\Form\Extension;
+namespace Plugin\NewsPageSelfReliance42\Form\Extension;
 
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Common\EccubeConfig;

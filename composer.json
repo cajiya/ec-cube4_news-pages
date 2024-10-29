@@ -1,5 +1,5 @@
 {
-  "name": "ec-cube/newspageselfreliance42",
+  "name": "ec-cube/NewsPageSelfReliance43",
   "version": "4.2.0",
   "description": "新着情報の独自ページ化",
   "type": "eccube-plugin",
@@ -7,6 +7,6 @@
     "ec-cube/plugin-installer": "^2.0"
   },
   "extra": {
-    "code": "NewsPageSelfReliance42"
+    "code": "NewsPageSelfReliance43"
   }
 }

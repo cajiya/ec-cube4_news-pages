@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance42\Form\Extension;
+namespace Plugin\NewsPageSelfReliance43\Form\Extension;
 
 use Eccube\Form\Type\Admin\NewsType;
 use Eccube\Common\EccubeConfig;
@@ -28,7 +28,7 @@ class NpsrNewsTypeExtension extends AbstractTypeExtension
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $options = $builder->get('description')->getOptions();

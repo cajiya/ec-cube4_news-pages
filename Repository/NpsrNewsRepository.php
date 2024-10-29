@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\NewsPageSelfReliance42\Repository;
+namespace Plugin\NewsPageSelfReliance43\Repository;
 
 use Eccube\Entity\News;
 use Eccube\Repository\AbstractRepository;

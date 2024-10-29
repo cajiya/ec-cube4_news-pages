@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\NewsPageSelfReliance42;
+namespace Plugin\NewsPageSelfReliance43;
 
 use Eccube\Entity\Layout;
 use Eccube\Entity\Page;
@@ -28,8 +28,9 @@ use Eccube\Repository\PageRepository;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 
+use Eccube\Common\EccubeConfig;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PluginManager extends AbstractPluginManager
@@ -163,8 +164,10 @@ class PluginManager extends AbstractPluginManager
      */
     private function copyFiles(ContainerInterface $container)
     {
-        $appTemplateDefDir = $container->getParameter('eccube_theme_front_dir');
-        $appTemplateAdminDir = $container->getParameter('eccube_theme_admin_dir');
+        $eccubeConfig = $container->get(EccubeConfig::class);
+
+        $appTemplateDefDir = $eccubeConfig->get('eccube_theme_front_dir');
+        $appTemplateAdminDir = $eccubeConfig->get('eccube_theme_admin_dir');
 
         $file = new Filesystem();
 
@@ -180,8 +183,10 @@ class PluginManager extends AbstractPluginManager
      */
     private function removeFiles(ContainerInterface $container)
     {
-        $appTemplateDefDir = $container->getParameter('eccube_theme_front_dir');
-        $appTemplateAdminDir = $container->getParameter('eccube_theme_admin_dir');
+        $eccubeConfig = $container->get(EccubeConfig::class);
+
+        $appTemplateDefDir = $eccubeConfig->get('eccube_theme_front_dir');
+        $appTemplateAdminDir = $eccubeConfig->get('eccube_theme_admin_dir');
 
         $file = new Filesystem();
 

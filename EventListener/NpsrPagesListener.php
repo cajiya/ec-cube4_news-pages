@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance42\EventListener;
+namespace Plugin\NewsPageSelfReliance43\EventListener;
 
 use Eccube\Request\Context;
 use Eccube\Repository\NewsRepository;
@@ -94,7 +94,7 @@ class NpsrPagesListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents() : array
     {
         return [
             KernelEvents::RESPONSE => ['onKernelResponse', 512],

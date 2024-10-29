@@ -1,4 +1,4 @@
-# EC-CUBE4.2用 新着情報一覧／詳細ページ生成プラグイン
+# EC-CUBE4.3用 新着情報一覧／詳細ページ生成プラグイン
 
 EC-CUBEデフォルトの「新着情報」の、一覧／詳細URLを生成する。
 
@@ -11,11 +11,8 @@ EC-CUBEデフォルトの「新着情報」の、一覧／詳細URLを生成す�
 # インストール方法
 
 ```
-cd app/Plugin;
-git clone https://github.com/cajiya/ec-cube4_npsr.git;
-mv ec-cube4_npsr NewsPageSelfReliance42;
-cd ../../;
-php bin/console eccube:plugin:install --code="NewsPageSelfReliance42"
+git clone https://github.com/cajiya/ec-cube4_npsr.git app/Plugin/NewsPageSelfReliance43;
+php bin/console eccube:plugin:install --code="NewsPageSelfReliance43"
 ```
 
 # 開発作業時の注意事項
@@ -33,6 +30,6 @@ php bin/console cache:clear --no-warmup
 `app/template/`内のファイルを削除する処理をしているので、以下コマンドの実行でも削除可能。
 
 ```
-php bin/console eccube:plugin:disable --code="NewsPageSelfReliance42"
-php bin/console eccube:plugin:enable --code="NewsPageSelfReliance42"
+php bin/console eccube:plugin:disable --code="NewsPageSelfReliance43"
+php bin/console eccube:plugin:enable --code="NewsPageSelfReliance43"
 ```

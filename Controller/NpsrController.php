@@ -1,10 +1,10 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance42\Controller;
+namespace Plugin\NewsPageSelfReliance43\Controller;
 
 use Eccube\Controller\AbstractController;
 
-use Plugin\NewsPageSelfReliance42\Repository\NpsrNewsRepository;
+use Plugin\NewsPageSelfReliance43\Repository\NpsrNewsRepository;
 use Eccube\Entity\News;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -37,12 +37,10 @@ class NpsrController extends AbstractController
   }
 
 
-  /**
-   * ニュース一覧画面.
-   *
-   * @Route( "/news" , name="news_index" )
-   * @Template("News/index.twig")
-   */
+  
+  // ニュース一覧画面.
+  #[Route('/news', name: 'news_index')]
+  #[Template('News/index.twig')]
   public function index( Request $request, PaginatorInterface $paginator )
   {
     // handleRequestは空のqueryの場合は無視するため
@@ -63,16 +61,12 @@ class NpsrController extends AbstractController
     ];
   }
 
-  /**
-   * ニュース詳細画面.
-   *
-   * @Route("/news/{id}" , name="news_detail" )
-   * @Template("News/detail.twig")
-   * @ParamConverter("News", options={"id" = "id"})
-   */
+  // ニュース詳細画面
+  #[Route('/news/{id}', name: 'news_detail')]
+  #[Template('News/detail.twig')]
   public function detail( Request $request, News $News )
   {
-    
+
     if ( !$this->checkVisibility($News) ) {
       throw new NotFoundHttpException();
     }

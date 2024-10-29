@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\NewsPageSelfReliance42\EventListener;
+namespace Plugin\NewsPageSelfReliance43\EventListener;
 
 use Eccube\Request\Context;
 use Eccube\Repository\NewsRepository;
@@ -62,7 +62,7 @@ class NpsrControllerListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents() : array
     {
         return [
             'admin.content.news.edit.complete' => ['saveNewsThumbnail', 512],
